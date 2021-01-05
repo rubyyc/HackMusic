@@ -14,7 +14,8 @@ app.on('ready', () => {
 
   ipcMain.on('message', (event, arg) => {
     console.log(arg)
-    event.sender.send('reply', 'hello from main')
+    //event.sender.send('reply', 'hello from main')
+    mainWindow.send('reply', 'hello from mainWindow')
   })
 
   // const secondWindow = new BrowserWindow({
