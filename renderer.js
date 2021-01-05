@@ -4,3 +4,8 @@
 // `nodeIntegration` is turned off. Use `preload.js` to
 // selectively enable features needed in the rendering
 // process.
+alert(process.versions.node)
+
+window.addEventListener('DOMContentLoaded',() => {
+  alert('greeting from the DOM side')
+})
