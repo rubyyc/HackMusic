@@ -19,6 +19,21 @@ app.on('ready', () => {
     mainWindow.send('reply', 'hello from mainWindow')
   })
 
+  
+
+  ipcMain.on('add-music-window', (event, arg) => {
+    const addWindow = new BrowserWindow({
+      width: 500,
+      height: 400,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false
+      },
+      parent: mainWindow
+    })
+    addWindow.loadFile('./renderer/add.html')
+  })
+
   // const secondWindow = new BrowserWindow({
   //   width: 400,
   //   height: 300,
