@@ -1,17 +1,33 @@
 const {app, BrowserWindow, ipcMain } = require('electron')
 
+class AppWindow extends BrowserWindow {
+  constructor(config, fileLocation) {
+    const basicConfig = {
+      width: 800,
+      height: 600,
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false
+      }
+    }
+    // 合并两个object
+    // 第一种方法
+    // const finalConfig = Object.assign(basicConfig, config)
+    // 第二种方法
+    const finalConfig = { ...basicConfig, ...config}
+    super(finalConfig)
+    this.loadFile(fileLocation)
+  }
+}
+
 app.on('ready', () => {
   console.log("electron已完全加载.准备创建window...")
 
-  const mainWindow = new BrowserWindow({
+  const mainWindow = new AppWindow({
     width: 800,
     height: 600,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    }
-  })
-  mainWindow.loadFile('./renderer/index.html')
+  }, './renderer/index.html')
+  // mainWindow.loadFile('./renderer/index.html')
 
   ipcMain.on('message', (event, arg) => {
     console.log(arg)
@@ -19,30 +35,13 @@ app.on('ready', () => {
     mainWindow.send('reply', 'hello from mainWindow')
   })
 
-  
-
   ipcMain.on('add-music-window', (event, arg) => {
-    const addWindow = new BrowserWindow({
+    const addWindow = new AppWindow({
       width: 500,
       height: 400,
-      webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false
-      },
       parent: mainWindow
-    })
-    addWindow.loadFile('./renderer/add.html')
+    }, './renderer/add.html')
   })
-
-  // const secondWindow = new BrowserWindow({
-  //   width: 400,
-  //   height: 300,
-  //   webPreferences: {
-  //     nodeIntegration: true
-  //   },
-  //   parent: mainWindow
-  // })
-  // secondWindow.loadFile('second.html')
 })
 
 /*
