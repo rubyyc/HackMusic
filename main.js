@@ -5,6 +5,7 @@ class AppWindow extends BrowserWindow {
     const basicConfig = {
       width: 800,
       height: 600,
+      show: false,
       webPreferences: {
         nodeIntegration: true,
         contextIsolation: false
@@ -17,6 +18,9 @@ class AppWindow extends BrowserWindow {
     const finalConfig = { ...basicConfig, ...config}
     super(finalConfig)
     this.loadFile(fileLocation)
+    this.once('ready-to-show', () => {
+      this.show()
+    })
   }
 }
 
