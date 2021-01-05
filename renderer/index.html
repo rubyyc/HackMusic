@@ -5,11 +5,13 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Hello World!</title>
+    <title>本地播放器</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <p id="message"></p>
-    <script src="renderer.js"></script>
+    <div class="container mt-4">
+      <h1>HackMusic</h1>
+      <button type="button" class="btn btn-primary btn-lg btn-block mt-4">添加歌曲到曲库</button>
+    </div>
   </body>
 </html>

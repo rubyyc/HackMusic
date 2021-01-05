@@ -7,10 +7,11 @@ app.on('ready', () => {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   })
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('./renderer/index.html')
 
   ipcMain.on('message', (event, arg) => {
     console.log(arg)
