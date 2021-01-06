@@ -1,8 +1,12 @@
 const {app, BrowserWindow, ipcMain, dialog } = require('electron')
+const DataStore = require('./renderer/MusicDataStore')
 
-const Store = require('electron-store')
-const store = new Store()
-console.log('userData', app.getPath('userData'))
+// 创建数据文件名称
+const MyStore = new DataStore({'name' : 'Music-Data'})
+
+// const Store = require('electron-store')
+// const store = new Store()
+// console.log('userData', app.getPath('userData'))
 
 class AppWindow extends BrowserWindow {
   constructor(config, fileLocation) {
@@ -62,6 +66,12 @@ app.on('ready', () => {
         event.sender.send('selected-file', result.filePaths)
       }
     })
+  })
+
+  ipcMain.on('add-tracks', (event, tracks) => {
+    console.log('Main 接收 tracks', tracks)
+    const updatedTracks = MyStore.addTracks(tracks).getTracks()
+    console.log('updated tracks', updatedTracks)
   })
 })
 

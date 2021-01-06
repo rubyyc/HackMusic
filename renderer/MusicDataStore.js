@@ -14,7 +14,7 @@ class DataStore extends Store {
   }
 
   getTracks() {
-    return this.get('trakcs') || []
+    return this.get('tracks') || ['暂无数据']
   }
 
   addTracks(tracks) {
@@ -27,7 +27,7 @@ class DataStore extends Store {
     }).filter(track => {
       const currentTracksPath = this.getTracks().map(track => track.path)
       return currentTracksPath.indexOf(track.path) < 0
-    })
+    })    
     this.tracks = [ ...this.tracks, ...tracksWithProps]
     return this.saveTracks()
   }
