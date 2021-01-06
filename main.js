@@ -1,5 +1,9 @@
 const {app, BrowserWindow, ipcMain, dialog } = require('electron')
 
+const Store = require('electron-store')
+const store = new Store()
+console.log('userData', app.getPath('userData'))
+
 class AppWindow extends BrowserWindow {
   constructor(config, fileLocation) {
     const basicConfig = {
