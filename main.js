@@ -47,13 +47,16 @@ app.on('ready', () => {
     }, './renderer/add.html')
   })
 
-  ipcMain.on('open-music-file', () => {
+  ipcMain.on('open-music-file', (event) => {
     console.log('open-music-file')
     dialog.showOpenDialog({
       properties: ['openFile', 'multiSelections'],
       filters: [{ name: 'Music', extensions: ['mp3']}]
     }).then( result => {
       console.log(result.filePaths)
+      if (result.filePaths) {
+        event.sender.send('selected-file', result.filePaths)
+      }
     })
   })
 })
