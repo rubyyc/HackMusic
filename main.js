@@ -39,6 +39,11 @@ app.on('ready', () => {
     width: 800,
     height: 600,
   }, './renderer/index.html')
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    console.log('did-finish-load')
+    mainWindow.send('getTracks', MyStore.getTracks())
+  })
   // mainWindow.loadFile('./renderer/index.html')
 
   ipcMain.on('message', (event, arg) => {
@@ -72,6 +77,8 @@ app.on('ready', () => {
     console.log('Main 接收 tracks', tracks)
     const updatedTracks = MyStore.addTracks(tracks).getTracks()
     console.log('updated tracks', updatedTracks)
+    // 往主窗口传递数据
+    mainWindow.send('getTracks', updatedTracks)
   })
 })
 
