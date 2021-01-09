@@ -42,7 +42,7 @@ ipcRenderer.on('getTracks' , (event, tracks) => {
   }
 })
 
-
+// 渲染播放器的html
 const renderPlayerHTML = (name, duration) => {
   const player = $('player-status')
   const html = `
@@ -62,8 +62,15 @@ musicAudio.addEventListener('loadedmetadata', () => {
   renderPlayerHTML(currentTrack.fileName, musicAudio.duration)
 })
 
+// 更新播放时间
+const updateProgressHTML = (currentTime) => {
+  const seeker = $('current-seeker')
+  seeker.innerHTML = currentTime
+}
+
 musicAudio.addEventListener('timeupdate', () => {
   // 更新播放器状态
+  updateProgressHTML(musicAudio.currentTime)
 })
 
 
