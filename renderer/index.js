@@ -35,6 +35,11 @@ ipcRenderer.on('getTracks' , (event, tracks) => {
   allTracks = tracks
   // 渲染主页面列表
   renderListHTML(tracks)
+  if ( currentTrack ){
+    var currentli = document.querySelector(`[data-id="${currentTrack.id}"]`)
+    console.log(`通过document.querySelector([data-id="${currentTrack.id}"]获取li`, currentli)
+    currentli.classList.replace('fa-play','fa-pause')
+  }
 })
 
 // 点击播放
@@ -72,6 +77,7 @@ $('tracksList').addEventListener('click', (event) =>{
     // 删除音乐
     if(currentTrack && currentTrack.id === id) {
       musicAudio.pause()
+      currentTrack = ''
     }
     ipcRenderer.send('delete-track', id)
   }
