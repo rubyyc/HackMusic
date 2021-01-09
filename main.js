@@ -80,6 +80,12 @@ app.on('ready', () => {
     // 往主窗口传递数据
     mainWindow.send('getTracks', updatedTracks)
   })
+
+  // 删除音乐
+  ipcMain.on('delete-track', (event, id) => {
+    const updatedTracks = MyStore.deleteTrack(id).getTracks()
+    mainWindow.send('getTracks', updatedTracks)
+  })
 })
 
 /*
