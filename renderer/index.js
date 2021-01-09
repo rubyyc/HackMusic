@@ -11,12 +11,12 @@ const renderListHTML = (tracks) => {
   const tracksListHTML = tracks.reduce((html, track) => {
     html += `<li class="row music-track list-group-item d-flex justify-content-between align-items-center">
       <div class="col-10">
-        <i class="fas fa-music mr-2"></i>
+        <i class="fas fa-music mr-2 text-secondary"></i>
         <b>${track.fileName}</b>
       </div>
       <div class="col-2">
-        <i class="fas fa-play mr-2"></i>
-        <i class="fas fa-trash-alt mr-2"></i>
+        <i class="fas fa-play mr-3"></i>
+        <i class="fas fa-trash-alt"></i>
       </div>
     </li>`
     return html
