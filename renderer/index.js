@@ -60,17 +60,24 @@ const renderPlayerHTML = (name, duration) => {
 musicAudio.addEventListener('loadedmetadata', () => {
   // 渲染播放器
   renderPlayerHTML(currentTrack.fileName, musicAudio.duration)
+  // 更新播放器状态
+  updateProgressHTML(musicAudio.currentTime, musicAudio.duration)
 })
 
 // 更新播放时间
-const updateProgressHTML = (currentTime) => {
+const updateProgressHTML = (currentTime, duration) => {
+  // 计算 progress
+  const progress =  Math.floor(currentTime / duration * 100)
+  const bar = $('player-progress')
+  bar.innerHTML = progress + "%"
+  bar.style.width = progress + "%"
   const seeker = $('current-seeker')
   seeker.innerHTML = convertDuration(currentTime)
 }
 
 musicAudio.addEventListener('timeupdate', () => {
   // 更新播放器状态
-  updateProgressHTML(musicAudio.currentTime)
+  updateProgressHTML(musicAudio.currentTime, musicAudio.duration)
 })
 
 
@@ -92,6 +99,7 @@ $('tracksList').addEventListener('click', (event) =>{
       currentTrack = allTracks.find(track => track.id === id)
       musicAudio.src = currentTrack.path
       musicAudio.play()
+      
       // 还原之前的图标
       const resetIconEle = document.querySelector('.fa-pause')
       if (resetIconEle) {
