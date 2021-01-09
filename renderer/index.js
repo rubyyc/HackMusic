@@ -42,6 +42,31 @@ ipcRenderer.on('getTracks' , (event, tracks) => {
   }
 })
 
+
+const renderPlayerHTML = (name, duration) => {
+  const player = $('player-status')
+  const html = `
+                <div class="col font-weight-bold">
+                  正在播放: ${name}
+                </div>
+                <div class="col">
+                  <span id="current-seeker">00:00</span> / ${duration}
+                </div>
+                `
+  player.innerHTML = html
+
+}
+
+musicAudio.addEventListener('loadedmetadata', () => {
+  // 渲染播放器
+  renderPlayerHTML(currentTrack.fileName, musicAudio.duration)
+})
+
+musicAudio.addEventListener('timeupdate', () => {
+  // 更新播放器状态
+})
+
+
 // 点击播放
 $('tracksList').addEventListener('click', (event) =>{
   event.preventDefault()
