@@ -2,6 +2,7 @@ const { ipcRenderer } = require('electron')
 const { $, convertDuration } = require('./helper')
 
 let musicAudio = new Audio()
+// musicAudio.loop = true
 let allTracks
 let currentTrack
 
@@ -80,6 +81,14 @@ const updateProgressHTML = (currentTime, duration) => {
   const seeker = $('current-seeker')
   if (seeker) {
     seeker.innerHTML = convertDuration(currentTime)
+  }
+
+  if ( !musicAudio.loop && musicAudio.ended) {
+    const currentIndex = allTracks.indexOf(currentTrack)
+    index = (currentIndex + 1)  % (allTracks.length)
+    currentTrack =  allTracks[index]
+    musicAudio.src = currentTrack.path
+    musicAudio.play()
   }
 }
 
