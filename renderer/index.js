@@ -55,9 +55,10 @@ const renderPlayerHTML = (name, duration) => {
                   <span id="current-seeker">00:00</span> / ${convertDuration(duration)}
                 </div>
                 <div class="col-3">
-                  <i class="fas fa-step-backward"></i>
-                  <i class="fas fa-pause ml-5" id="play-icon"></i>
-                  <i class="fas fa-step-forward ml-5"></i>
+                  <i class="fas fa-align-justify ml-4"></i>
+                  <i class="fas fa-step-backward ml-4"></i>
+                  <i class="fas fa-pause ml-4" id="play-icon"></i>
+                  <i class="fas fa-step-forward ml-4"></i>
                 </div>
                 `
   player.innerHTML = html
@@ -152,7 +153,9 @@ $('player-status').addEventListener('click', (event) => {
   const { classList } = event.target
   const currentIndex = allTracks.indexOf(currentTrack)
   let index = 0
+  
   if (classList.contains('fa-step-backward')) {
+    // 上一曲
     replaceIcon(0)
     let preIndex = currentIndex - 1
     index = preIndex > 0 ? preIndex : preIndex + allTracks.length
@@ -161,6 +164,7 @@ $('player-status').addEventListener('click', (event) => {
     musicAudio.play()
     replaceIcon(1)
   } else if (classList.contains('fa-step-forward')) {
+    // 下一曲
     replaceIcon(0)
     index = (currentIndex + 1)  % (allTracks.length)
     currentTrack =  allTracks[index]
@@ -168,13 +172,28 @@ $('player-status').addEventListener('click', (event) => {
     musicAudio.play()
     replaceIcon(1)
   } else if (classList.contains('fa-pause')){
+    // 暂停
     musicAudio.pause()
     classList.replace('fa-pause','fa-play')
     replaceIcon(0)
   } else if (classList.contains('fa-play')){
+    // 播放
     musicAudio.play()
     classList.replace('fa-play', 'fa-pause')
     replaceIcon(1)
+  }else if (classList.contains('fa-redo-alt')){
+    // 随机播放
+    // musicAudio.loop = true
+    classList.replace('fa-redo-alt', 'fa-random')
+  }
+  else if (classList.contains('fa-random')){
+    // 顺序播放
+    musicAudio.loop =  false
+    classList.replace('fa-random', 'fa-align-justify')
+  }else if (classList.contains('fa-align-justify')){
+    // 循环播放
+    musicAudio.loop = true
+    classList.replace('fa-align-justify','fa-redo-alt')
   }
 })
 
