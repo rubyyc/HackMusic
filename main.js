@@ -36,8 +36,9 @@ app.on('ready', () => {
   console.log("electron已完全加载.准备创建window...")
 
   const mainWindow = new AppWindow({
-    width: 800,
-    height: 600,
+    width: 1459,
+    height: 757,
+    resizable: false
   }, './renderer/index.html')
 
   mainWindow.webContents.on('did-finish-load', () => {
