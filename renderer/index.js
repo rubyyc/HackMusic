@@ -9,7 +9,6 @@ $('add-music-button').addEventListener('click', () => {
   ipcRenderer.send('add-music-window')
 })
 
-
 const renderListHTML = (tracks) => {
   const tracksList = $('tracksList')
   const tracksListHTML = tracks.reduce((html, track) => {
@@ -32,7 +31,9 @@ const renderListHTML = (tracks) => {
 // 接收数据渲染主页面
 ipcRenderer.on('getTracks' , (event, tracks) => {
   console.log('mainWindow接收到数据')
+  
   allTracks = tracks
+  console.log(allTracks)
   // 渲染主页面列表
   renderListHTML(tracks)
   if ( currentTrack ){
@@ -46,11 +47,16 @@ ipcRenderer.on('getTracks' , (event, tracks) => {
 const renderPlayerHTML = (name, duration) => {
   const player = $('player-status')
   const html = `
-                <div class="col font-weight-bold">
+                <div class="col-6 font-weight-bold  text-truncate">
                   正在播放: ${name}
                 </div>
-                <div class="col">
+                <div class="col-3">
                   <span id="current-seeker">00:00</span> / ${convertDuration(duration)}
+                </div>
+                <div class="col-3">
+                  <i class="fas fa-step-backward"></i>
+                  <i class="fas fa-pause ml-5" id="play-icon"></i>
+                  <i class="fas fa-step-forward ml-5"></i>
                 </div>
                 `
   player.innerHTML = html
@@ -72,7 +78,9 @@ const updateProgressHTML = (currentTime, duration) => {
   bar.innerHTML = progress + "%"
   bar.style.width = progress + "%"
   const seeker = $('current-seeker')
-  seeker.innerHTML = convertDuration(currentTime)
+  if (seeker) {
+    seeker.innerHTML = convertDuration(currentTime)
+  }
 }
 
 musicAudio.addEventListener('timeupdate', () => {
@@ -108,13 +116,18 @@ $('tracksList').addEventListener('click', (event) =>{
     }
     // 替换播放图标
     classList.replace('fa-play', 'fa-pause')
+    if ($('play-icon')) {
+      $('play-icon').classList.replace('fa-play', 'fa-pause')
+    }
   } else if (id && classList.contains('fa-pause')) {
     // 暂停
     musicAudio.pause()
     // 替换播放图标
     classList.replace('fa-pause','fa-play')
+    $('play-icon').classList.replace('fa-pause','fa-play')
   } else if (id && classList.contains('fa-trash-alt')) {
     // 删除音乐
+    $('player-status').innerHTML = ''
     if(currentTrack && currentTrack.id === id) {
       musicAudio.pause()
       currentTrack = ''
@@ -122,3 +135,42 @@ $('tracksList').addEventListener('click', (event) =>{
     ipcRenderer.send('delete-track', id)
   }
 })
+
+
+// 播放器-控制
+$('player-status').addEventListener('click', (event) => {
+  event.preventDefault()
+  const { classList } = event.target
+  const currentIndex = allTracks.indexOf(currentTrack)
+  let index = 0
+  if (classList.contains('fa-step-backward')) {
+    let preIndex = currentIndex - 1
+    index = preIndex > 0 ? preIndex : preIndex + allTracks.length
+    currentTrack =  allTracks[index]
+    musicAudio.src = currentTrack.path
+    musicAudio.play()
+  } else if (classList.contains('fa-step-forward')) {
+    index = (currentIndex + 1)  % (allTracks.length)
+    currentTrack =  allTracks[index]
+    musicAudio.src = currentTrack.path
+    musicAudio.play()
+  } else if (classList.contains('fa-pause')){
+    musicAudio.pause()
+    classList.replace('fa-pause','fa-play')
+    replaceIcon(0)
+  } else if (classList.contains('fa-play')){
+    musicAudio.play()
+    classList.replace('fa-play', 'fa-pause')
+    replaceIcon(1)
+  }
+})
+
+const replaceIcon = (flag) => {
+  var currentli = document.querySelector(`[data-id="${currentTrack.id}"]`)
+  if (flag) {
+    currentli.classList.replace('fa-play','fa-pause')
+  } else {
+    currentli.classList.replace('fa-pause','fa-play')
+  }
+  
+}
