@@ -153,16 +153,20 @@ $('player-status').addEventListener('click', (event) => {
   const currentIndex = allTracks.indexOf(currentTrack)
   let index = 0
   if (classList.contains('fa-step-backward')) {
+    replaceIcon(0)
     let preIndex = currentIndex - 1
     index = preIndex > 0 ? preIndex : preIndex + allTracks.length
     currentTrack =  allTracks[index]
     musicAudio.src = currentTrack.path
     musicAudio.play()
+    replaceIcon(1)
   } else if (classList.contains('fa-step-forward')) {
+    replaceIcon(0)
     index = (currentIndex + 1)  % (allTracks.length)
     currentTrack =  allTracks[index]
     musicAudio.src = currentTrack.path
     musicAudio.play()
+    replaceIcon(1)
   } else if (classList.contains('fa-pause')){
     musicAudio.pause()
     classList.replace('fa-pause','fa-play')

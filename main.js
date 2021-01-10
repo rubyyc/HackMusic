@@ -65,7 +65,7 @@ app.on('ready', () => {
     console.log('open-music-file')
     dialog.showOpenDialog({
       properties: ['openFile', 'multiSelections'],
-      filters: [{ name: 'Music', extensions: ['mp3']}]
+      filters: [{ name: 'Music', extensions: ['mp3','flac']}]
     }).then( result => {
       console.log(result.filePaths)
       if (result.filePaths) {
