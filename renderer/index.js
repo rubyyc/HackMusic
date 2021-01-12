@@ -149,6 +149,7 @@ $('tracksList').addEventListener('click', (event) =>{
 
 // 播放器-控制
 $('player-status').addEventListener('click', (event) => {
+  // console.log(99999)
   event.preventDefault()
   const { classList } = event.target
   const currentIndex = allTracks.indexOf(currentTrack)
@@ -206,3 +207,10 @@ const replaceIcon = (flag) => {
   }
   
 }
+
+//接收快捷键
+ipcRenderer.on('pause',(event) => {
+  if (currentTrack) {
+    $('play-icon').click()
+  }
+})

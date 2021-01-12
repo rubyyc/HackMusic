@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, dialog } = require('electron')
+const {app, BrowserWindow, ipcMain, dialog, globalShortcut  } = require('electron')
 const DataStore = require('./renderer/MusicDataStore')
 
 // 创建数据文件名称
@@ -34,6 +34,10 @@ class AppWindow extends BrowserWindow {
 
 app.on('ready', () => {
   console.log("electron已完全加载.准备创建window...")
+  const ret = globalShortcut.register('Alt+z', () => {
+    mainWindow.send('pause')
+  })
+
 
   const mainWindow = new AppWindow({
     width: 1459,
