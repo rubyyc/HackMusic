@@ -5,3 +5,6 @@
 #player-status .fas:hover {
   cursor: pointer;
 }
+.music-list-mb {
+  margin-bottom: 120px;
+}
